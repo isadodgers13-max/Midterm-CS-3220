@@ -1,0 +1,53 @@
+package servlets;
+import dao.StudentDAO;
+import model.Student;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.*;
+import java.io.IOException;
+
+@WebServlet(name="RegisterStudentServlet", urlPatterns={"/register"}, loadOnStartup=1)
+public class RegisterStudentServlet extends HttpServlet {
+    private StudentDAO studentDAO = new StudentDAO();
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        // show register form
+        req.getRequestDispatcher("/WEB-INF/views/register.jsp").forward(req, resp);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String name = req.getParameter("name");
+        String count = req.getParameter("count");
+
+        String error = null;
+        if (name == null || name.trim().isEmpty()) error = "Name is required.";
+        int age = 0;
+        try {
+            age = Integer.parseInt(ageStr);
+            if (age < 3 || age > 18) error = "Age must be between 3 and 18.";
+        } catch (NumberFormatException e) {
+            error = "Age must be a number.";
+        }
+
+        if (error != null) {
+            req.setAttribute("error", error);
+            req.setAttribute("name", name);
+            req.setAttribute("count", count);
+            req.getRequestDispatcher("/WEB-INF/views/register.jsp").forward(req, resp);
+            return;
+        }
+
+        Student s = Add Lesson();
+        s.setName(name.trim());
+        s.setCount(count);
+        try {
+            studentDAO.addStudent(s);
+            resp.sendRedirect(req.getContextPath() + "/students?created=1");
+        } catch (Exception ex) {
+            throw new ServletException(ex);
+        }
+    }
+}
