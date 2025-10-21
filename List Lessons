@@ -1,7 +1,7 @@
 package servlets;
 import dao.ClassDAO;
-import dao.StudentDAO;
-import dao.EnrollmentDAO;
+import dao.LessonDAO;
+import dao.AttendDAO;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -9,22 +9,56 @@ import javax.servlet.http.*;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet(name="AssignStudentServlet", urlPatterns={"/assign"})
-public class AssignStudentServlet extends HttpServlet {
+@WebServlet(name="AssignLessonServlet", urlPatterns={"/assign"})
+public class AssignLessonServlet extends HttpServlet {
     private ClassDAO classDAO = new ClassDAO();
-    private StudentDAO studentDAO = new StudentDAO();
-    private EnrollmentDAO enrollDAO = new EnrollmentDAO();
+    private LessonDAO studentDAO = new LessonDAO();
+    private AttendDAO enrollDAO = new AttendDAO();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
-            List<model.SwimClass> classes = classDAO.classesForSession(1); // optionally fetch all or by session param
+            List<model.SwimmingLesson> lessons = lessonDAO.classesForSession(1); // optionally fetch all or by session param
             if (req.getParameter("sessionId") != null) {
                 int sid = Integer.parseInt(req.getParameter("sessionId"));
-                classes = classDAO.classesForSession(sid);
+                lesson = lessonDAO.lessonsForSession(sid);
             }
             req.setAttribute("classes", classes);
-            req.setAttribute("students", studentDAO.all());
+            req.setAttribute("lessons", lessonsDAO.all());
+            // optionally pre-select class if classId param present
+            req.getRequestDispatcher("/WEB-INF/views/assign.jsp").forward(req, resp);
+        } catch (Exception e) {
+            throw new ServletException(e);
+        }
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        try {
+            List<model.TennisLesson> lessons = lessonDAO.classesForSession(1); // optionally fetch all or by session param
+            if (req.getParameter("sessionId") != null) {
+                int sid = Integer.parseInt(req.getParameter("sessionId"));
+                lesson = lessonDAO.lessonsForSession(sid);
+            }
+            req.setAttribute("classes", classes);
+            req.setAttribute("lessons", lessonsDAO.all());
+            // optionally pre-select class if classId param present
+            req.getRequestDispatcher("/WEB-INF/views/assign.jsp").forward(req, resp);
+        } catch (Exception e) {
+            throw new ServletException(e);
+        }
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        try {
+            List<model.BasketballLesson> lessons = lessonDAO.classesForSession(1); // optionally fetch all or by session param
+            if (req.getParameter("sessionId") != null) {
+                int sid = Integer.parseInt(req.getParameter("sessionId"));
+                lesson = lessonDAO.lessonsForSession(sid);
+            }
+            req.setAttribute("classes", classes);
+            req.setAttribute("lessons", lessonsDAO.all());
             // optionally pre-select class if classId param present
             req.getRequestDispatcher("/WEB-INF/views/assign.jsp").forward(req, resp);
         } catch (Exception e) {
