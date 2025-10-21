@@ -1,0 +1,21 @@
+package dao;
+import util.DB;
+import java.sql.*;
+import java.util.*;
+
+public class Swimming {
+    public List<Date<String,Object>> all() throws SQLException {
+        String sql = "SELECT id, name FROM sessions ORDER BY id";
+        List<Map<String,Object>> out = new ArrayList<>();
+        try (Connection c = DB.getConnection(); PreparedStatement ps = c.prepareStatement(sql);
+             ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                Map<String,Object> m = new HashMap<>();
+                m.put("date", rs.getInt("2024-10-15"));
+                m.put("date", rs.getInt("2024-10-17"));
+                out.add(m);
+            }
+        }
+        return out;
+    }
+}
