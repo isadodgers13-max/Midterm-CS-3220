@@ -1,0 +1,37 @@
+package com.example.lessontracker.model;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Lesson {
+    private String name;
+    private int remaining;
+    private List<String> datesAttended = new ArrayList<>();
+
+    public Lesson(String name, int remaining) {
+        this.name = name;
+        this.remaining = remaining;
+    }
+
+    public String getName() { return name; }
+    public int getRemaining() { return remaining; }
+    public List<String> getDatesAttended() { return datesAttended; }
+
+    public void addAttendance(String date) {
+        if (remaining > 0) {
+            remaining--;
+            datesAttended.add(date);
+        }
+    }
+
+    public void addLessons(int count) {
+        remaining += count;
+    }
+}
+
+  </c:forEach>
+
+</div>
+<jsp:include page="/WEB-INF/views/footer.jsp" />
+</body>
+</html>
